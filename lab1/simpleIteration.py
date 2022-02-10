@@ -1,3 +1,4 @@
+
 class SimpleIteration:
     def norma(self):
         pass
