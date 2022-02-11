@@ -13,13 +13,13 @@ class MyMatrix:
 
         if not validate(extendMatrixArray):
             raise InvalidArrayForCreateMatrix("Can't create matrix")
-        self.matrix = np.array(extendMatrixArray)  # use default parameter dtype = float64
+        self.matrix = np.array(extendMatrixArray, dtype=float)
         self.n = len(extendMatrixArray)
 
-    def print(self):
+    def print(self) -> None:
         print(self.matrix)
 
-    def check_diagonal_dominance(self):
+    def check_diagonal_dominance(self) -> bool:
         is_strongly = False
         for i in range(self.n):
             s = sum(self.matrix[i, :self.n])
@@ -29,7 +29,7 @@ class MyMatrix:
                 is_strongly = True
         return is_strongly
 
-    def try_move_equations(self):
+    def try_move_equations(self) -> None:
         def id_of_max_element(mass):
             ans = 0
             for i in range(len(mass) - 1):
@@ -46,8 +46,32 @@ class MyMatrix:
                 ans.append(dict[i])
             self.matrix = np.array(ans)
 
-    def norma(self):
-        return math.sqrt(sum((i ** 2 for i in self.matrix.flat)))
+    def get_vector_column_system(self):  # -> MyMatrix
+        ans = self.copy()
+        for i in range(ans.n):
+            for j in range(ans.n):
+                if i == j:
+                    ans.matrix[i, j] = 0
+                else:
+                    ans.matrix[i, j] = - self.matrix[i, j] / self.matrix[i, i]
+            ans.matrix[i, ans.n] = self.matrix[i, self.n] / self.matrix[i, i]
+        return ans
+
+    def insert_vector_into_vector_column_system(self, v: list[float]) -> list[float]:
+        v.append(1)
+        ans = []
+        for i in range(self.n):
+            ans.append(sum([
+                self.matrix[i, j] * v[j] for j in range(len(v))
+            ]))
+        v.pop()
+        return ans
+
+    def norma(self) -> float:
+        return math.sqrt(sum((i ** 2 for i in self.matrix[:, :self.n].flat)))
+
+    def copy(self):
+        return MyMatrix(self.matrix.copy())
 
 
 class InvalidArrayForCreateMatrix(Exception):
