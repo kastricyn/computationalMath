@@ -19,15 +19,32 @@ class MyMatrix:
     def print(self):
         print(self.matrix)
 
-    def checkDiagonalDominance(self):
-        isStrongly = False
+    def check_diagonal_dominance(self):
+        is_strongly = False
         for i in range(self.n):
             s = sum(self.matrix[i, :self.n])
             if 2 * self.matrix[i, i] < s:
                 return False
             if 2 * self.matrix[i, i] > s:
-                isStrongly = True
-        return isStrongly
+                is_strongly = True
+        return is_strongly
+
+    def try_move_equations(self):
+        def id_of_max_element(mass):
+            ans = 0
+            for i in range(len(mass) - 1):
+                if mass[ans] < mass[i]:
+                    ans = i
+            return ans
+
+        dict = {}
+        for row in self.matrix:
+            dict[id_of_max_element(row)] = row
+        if len(dict) == self.n:
+            ans = []
+            for i in range(self.n):
+                ans.append(dict[i])
+            self.matrix = np.array(ans)
 
     def norma(self):
         return math.sqrt(sum((i ** 2 for i in self.matrix.flat)))
