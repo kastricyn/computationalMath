@@ -76,18 +76,29 @@ class TestInsertVectorIntoSystem(unittest.TestCase):
         second = [1, 1, 1]
         self.assertAlmostEqualList(first, second)
 
+    def test_insertRandomVectorIntoEyeMatrix(self):
+        for i in range(20):
+            matrix = MyMatrix([])
+            matrix.n = i
+            matrix.matrix = np.column_stack((np.eye(i), [0] * i))
+            second = [random.random() for _ in range(i)]
+            first = matrix.insert_vector_into_vector_column_system(second)
+            self.assertAlmostEqualList(first, second)
     def test_insertRandomVectorIntoOneMatrix(self):
         for i in range(20):
             matrix = MyMatrix([])
             matrix.n = i
-            matrix.matrix = np.column_stack((np.eye(i), [0]*i))
-            second = [random.random() for _ in range(i)]
-            first = matrix.insert_vector_into_vector_column_system(second)
+            matrix.matrix = np.column_stack((np.ones((i, i)), [0] * i))
+            vector = [random.random() for _ in range(i)]
+            first = matrix.insert_vector_into_vector_column_system(vector)
+            second = [sum(vector)]*i
             self.assertAlmostEqualList(first, second)
 
 
 class TestNormaOfMatrix(unittest.TestCase):
-    pass
+    def test_tech(self):
+        matrix = MyMatrix([[0, -0.1, -0.1, 1.2], [-.2, 0, -.1, 1.3], [-.2, -.2, 0, 1.4]])
+        self.assertAlmostEqual(.3872983346207417, matrix.norma())
 
 
 if __name__ == '__main__':

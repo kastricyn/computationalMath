@@ -1,6 +1,7 @@
 import sys
 
 import myIO as io
+from lab1.solve import simple_iteration
 from myMatrix import InvalidArrayForCreateMatrix
 
 if __name__ == '__main__':
@@ -14,5 +15,4 @@ if __name__ == '__main__':
     except InvalidArrayForCreateMatrix:
         print("Проверьте входные данные")
     else:
-        print(e)
-        matrix.print()
+        simple_iteration(matrix, e)

@@ -13,3 +13,9 @@ def readmatrix(data):
     for i in range(n):
         matrix.append(list(map(float, data.readline().strip().split())))
     return e, MyMatrix(matrix)
+
+
+def print_vector(vector: list, msg: str | None) -> None:
+    print(f"{msg} (", end="")
+    print(*vector, sep="; ", end="")
+    print(")")

@@ -1,3 +1,6 @@
+from numpy import inf
+
+from lab1.myIO import print_vector
 from myMatrix import MyMatrix
 
 
@@ -14,8 +17,23 @@ def simple_iteration(extend_matrix: MyMatrix, e: float) -> None:
             print("К сожалению, удовлетворяющей перестановки не нашлось")
     else:
         print("Условие преобладания диагональных элементов выполняется.")
-    print("Выразим вектор-столбец из уравнений")
+    print("Выразим вектор-столбец системы из уравнений:")
+    equation_system: MyMatrix = extend_matrix.get_vector_column_system()
+    equation_system.print()
+
+    count = 1
+    ans = [0] * equation_system.n
+    before_ans = equation_system.insert_vector_into_vector_column_system([0] * equation_system.n)
+    fallibility = [inf]
+    while not max(fallibility) < e:
+        count += 1
+        ans = equation_system.insert_vector_into_vector_column_system(before_ans)
+        fallibility = [
+            abs(ans[i] - before_ans[i]) for i in range(equation_system.n)
+        ]
+        before_ans = ans
 
 
-
-
+    print_vector(ans, "результирующий вектор:")
+    print(f"решение найдено за {count} итераций")
+    print_vector(fallibility, "вектор погрешности:")
