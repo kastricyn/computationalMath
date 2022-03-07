@@ -1,7 +1,7 @@
 from myMatrix import MyMatrix
 
 
-# Example input:
+# Example input.txt:
 # 2 0.0001 # n epsilon
 # 2 1 0 #extends matrix
 # 1 2 0

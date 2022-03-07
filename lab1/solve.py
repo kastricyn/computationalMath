@@ -25,15 +25,17 @@ def simple_iteration(extend_matrix: MyMatrix, e: float) -> None:
     ans = [0] * equation_system.n
     before_ans = equation_system.insert_vector_into_vector_column_system([0] * equation_system.n)
     fallibility = [inf]
-    while not max(fallibility) < e:
-        count += 1
-        ans = equation_system.insert_vector_into_vector_column_system(before_ans)
-        fallibility = [
-            abs(ans[i] - before_ans[i]) for i in range(equation_system.n)
-        ]
-        before_ans = ans
-
-
+    try:
+        while not max(fallibility) < e:
+            count += 1
+            ans = equation_system.insert_vector_into_vector_column_system(before_ans)
+            fallibility = [
+                abs(ans[i] - before_ans[i]) for i in range(equation_system.n)
+            ]
+            before_ans = ans
+    except RuntimeWarning:
+        print(
+            "Произошло переполнение, может это от того что метод не подходит для данной СЛАУ? (последовательность приближений не сходится)")
     print_vector(ans, "результирующий вектор:")
     print(f"решение найдено за {count} итераций")
     print_vector(fallibility, "вектор погрешности:")
