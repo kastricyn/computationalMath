@@ -37,7 +37,7 @@ class IntegrateMethod:
         integral: float = integrate_sum(fun, integrate_interval, compact_number)
         while True:
             second_integral: float = integrate_sum(fun, integrate_interval, compact_number*2)
-            if abs(integral - second_integral) * runge_denominator < abs(epsilon):
+            if abs(integral - second_integral) / runge_denominator < abs(epsilon):
                 return second_integral, compact_number * 2
             integral = second_integral
             compact_number *= 2
