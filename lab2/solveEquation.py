@@ -1,18 +1,17 @@
-import sys
 from enum import auto
 from strenum import CamelCaseStrEnum
 
 from function import Function
 
 
-def solve(fun: Function, method: str, integrate_interval: tuple[float, float], epsilon: float,
-          compact_number: int = None) -> tuple[float, int]:
+def solve(fun: Function, method: str, solve_interavl: tuple[float, float], epsilon: float,
+          iterate_number: int = None) -> tuple[float, int]:
     chosen_method = SolveMethod.get_methods().get(method)
     if chosen_method is None:
         raise SolveMethod.InvalidMethodName("No find this method")
     match chosen_method:
         case SolveNameMethod.chord:
-            return SolveMethod.chord()
+            return SolveMethod.chord(fun, solve_interavl, epsilon, iterate_number)
 
 
 class SolveNameMethod(CamelCaseStrEnum):
@@ -46,8 +45,31 @@ class SolveMethod:
         return next_x, i
 
     @staticmethod
-    def simple_iteration(fun: Function, solve_interval: tuple[float, float], epsilon: float):
-        l = -1/fun.diff
+    def simple_iteration(fun: Function, solve_interval: tuple[float, float], epsilon: float, iterate_number: int) -> \
+            tuple[float, int]:
+        l: float = -1 / fun.diff().maximum(solve_interval)
+        phi = Function("x") + Function(str(l)) * fun
+        q = phi.diff().abs().maximum(solve_interval)
+
+        if iterate_number is not None:
+            x = solve_interval[0]
+            for _ in range(iterate_number):
+                x = phi(x)
+            return x, iterate_number
+
+        if q >= 1:
+            raise SolveMethod.NoConverge("Не удалось найти точку для сходимости")
+        end_iteration_condition = lambda x, next_x: abs(x - next_x) <= epsilon if q <= 0.5 else abs(x - next_x) <= (
+                1 - q) / q * epsilon
+
+        x = solve_interval[0]
+        next_x = phi.subs(x)
+        i = 2
+        while not end_iteration_condition(x, next_x):
+            x = next_x
+            next_x = phi.subs(x)
+            i += 1
+        return next_x, i
 
     @staticmethod
     def get_methods() -> dict:
@@ -60,4 +82,7 @@ class SolveMethod:
         pass
 
     class OneSignOfFunOnEndsOfCompact(Exception):
+        pass
+
+    class NoConverge(Exception):
         pass
