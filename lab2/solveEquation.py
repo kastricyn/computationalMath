@@ -1,3 +1,4 @@
+import sys
 from enum import auto
 from strenum import CamelCaseStrEnum
 
@@ -10,8 +11,10 @@ def solve(fun: Function, method: str, solve_interavl: tuple[float, float], epsil
     if chosen_method is None:
         raise SolveMethod.InvalidMethodName("No find this method")
     match chosen_method:
-        case SolveNameMethod.chord:
-            return SolveMethod.chord(fun, solve_interavl, epsilon, iterate_number)
+        case SolveMethod.chord | SolveMethod.simple_iteration:
+            return chosen_method(fun, solve_interavl, epsilon, iterate_number)
+        case _:
+            print("Check map name of method onto programm methods", file=sys.stderr)
 
 
 class SolveNameMethod(CamelCaseStrEnum):
@@ -24,11 +27,11 @@ class SolveMethod:
     def chord(fun: Function, solve_interval: tuple[float, float], epsilon: float, iterate_number: int = None) -> \
             tuple[float, int]:
         a, b = solve_interval
-        if fun.subs({"x": a}) * fun.subs({"x": b}) > 0:
+        if fun.subs(a) * fun.subs(b) > 0:
             raise SolveMethod.OneSignOfFunOnEndsOfCompact(
                 "Выберите отрезок, на концах которого функция принимает значения с разными знаками")
 
-        new_x = lambda x: x - (a - x) / (fun.subs(x) - fun.subs(x)) * fun.subs(x)
+        new_x = lambda x: x - (a - x) / (fun.subs(a) - fun.subs(x)) * fun.subs(x)
         x = b
 
         if iterate_number is not None:
@@ -38,7 +41,7 @@ class SolveMethod:
 
         next_x = new_x(x)
         i = 1
-        while abs(x - next_x) > epsilon:
+        while epsilon < abs(fun.subs(x)):
             x = next_x
             next_x = new_x(x)
             i += 1
@@ -47,7 +50,8 @@ class SolveMethod:
     @staticmethod
     def simple_iteration(fun: Function, solve_interval: tuple[float, float], epsilon: float, iterate_number: int) -> \
             tuple[float, int]:
-        l: float = -1 / fun.diff().maximum(solve_interval)
+        print(fun.diff())
+        l: float = -1 / fun.diff().abs().maximum(solve_interval)
         phi = Function("x") + Function(str(l)) * fun
         q = phi.diff().abs().maximum(solve_interval)
 
@@ -65,7 +69,8 @@ class SolveMethod:
         x = solve_interval[0]
         next_x = phi.subs(x)
         i = 2
-        while not end_iteration_condition(x, next_x):
+        # while not end_iteration_condition(x, next_x):
+        while epsilon < fun.subs(next_x):
             x = next_x
             next_x = phi.subs(x)
             i += 1

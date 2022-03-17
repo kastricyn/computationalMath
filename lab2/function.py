@@ -1,4 +1,5 @@
 import sympy as sp
+import matplotlib.pyplot as plt
 
 
 class Function:
@@ -7,8 +8,8 @@ class Function:
         self.fun = sp.parse_expr(function, transformations='all')
         self.f = sp.lambdify(symbols, self.fun)
 
-    def subs(self, val: dict[str, float]) -> float:
-        return self.fun.subs(val)
+    def subs(self, val: float) -> float:
+        return self.fun.subs({"x": val})
 
     def s(self, val) -> float:
         return self.f(val)
@@ -26,7 +27,7 @@ class Function:
         return Function((self.fun / other.fun).__str__())
 
     def abs(self):
-        return Function("abs(" + self.fun.__str__ + ")")
+        return Function("abs(" + self.fun.__str__() + ")")
 
     def diff(self):
         return Function(sp.diff(self.fun, self.symbols).__str__())
@@ -38,7 +39,7 @@ class Function:
             return sp.maximum(self.fun, self.symbols, interval)
         except NotImplementedError:
             ans = self.s(a)
-            for i in range(100 * a, 100 * b + 1):
+            for i in range(int(100 * a), int(100 * b) + 1):
                 t = self.s(i / 100)
                 if ans < t:
                     ans = t
@@ -51,7 +52,7 @@ class Function:
             return sp.minimum(self.fun, self.symbols, interval)
         except NotImplementedError:
             ans = self.s(a)
-            for i in range(100 * a, 100 * b + 1):
+            for i in range(int(100 * a), int(100 * b) + 1):
                 t = self.s(i / 100)
                 if ans > t:
                     ans = t
@@ -60,6 +61,23 @@ class Function:
     def print(self):
         # sp.init_printing(use_unicode=True)
         print(sp.pretty(self.fun))
+
+    def plt(self, compact: tuple[float, float]):
+        sp.plotting.plot(self.fun, line_color='red')
+        x = sp.Symbol("x")
+        sp.plot((sp.sin(x), (x, -sp.pi, sp.pi)), line_color='red', title='Пример графика SymPy')
+
+    def plot(self, compact: tuple[float, float]):
+        start, stop = compact
+        ax = plt.gca()
+        # plot X - axis
+        ax.axhline(y=0, color='c')
+        # plot Y - axis
+        # ax.axvline(x=0, color='g')
+
+        plt.plot([i / 100 for i in range(int(100 * start), int(100 * stop))],
+                 [self.f(i / 100) for i in range(int(100 * start), int(100 * stop))])
+        plt.show()
 
     def __str__(self) -> str:
         return self.fun.__str__()
