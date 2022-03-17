@@ -1,3 +1,4 @@
+import sys
 from enum import auto
 from strenum import CamelCaseStrEnum
 
@@ -17,6 +18,8 @@ def integrate(fun: Function, method: str, integrate_interval: tuple[float, float
         case IntegrateMethod.simpson:
             return IntegrateMethod.abstract_method(fun, chosen_method, integrate_interval, epsilon,
                                                    runge_denominator=15, compact_number=compact_number)
+        case _:
+            print("Check map name of method onto programm methods", file=sys.stderr)
 
 
 class IntegrateNameMethod(CamelCaseStrEnum):
@@ -36,7 +39,7 @@ class IntegrateMethod:
             return integrate_sum(fun, integrate_interval, compact_number), compact_number
         integral: float = integrate_sum(fun, integrate_interval, compact_number)
         while True:
-            second_integral: float = integrate_sum(fun, integrate_interval, compact_number*2)
+            second_integral: float = integrate_sum(fun, integrate_interval, compact_number * 2)
             if abs(integral - second_integral) / runge_denominator < abs(epsilon):
                 return second_integral, compact_number * 2
             integral = second_integral
@@ -90,7 +93,7 @@ class IntegrateMethod:
             IntegrateNameMethod.leftRectangular: IntegrateMethod.left_rectangle,
             IntegrateNameMethod.centerRectangular: IntegrateMethod.center_rectangle,
             IntegrateNameMethod.rightRectangular: IntegrateMethod.right_rectangle,
-            IntegrateNameMethod.trapeze: IntegrateMethod.trapeze
+            IntegrateNameMethod.trapeze: IntegrateMethod.trapeze,
         }
 
     class InvalidMethodName(Exception):
