@@ -82,6 +82,7 @@ class FunTwoVariable:
         return self.fun.__str__()
 
 
+
 if __name__ == '__main__':
     f = FunTwoVariable("x^2-31+y^3").diff()
     f.print()
