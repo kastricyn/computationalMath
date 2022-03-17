@@ -23,8 +23,8 @@ class SysTwoEquation:
     def solve(self, point_min: tuple[float, float], point_max: tuple[float, float], epsilon: float,
               point_start: tuple[float, float] = None, iterate_number: int = None) -> tuple[
         tuple[float, float], int]:
-        phi_x = self.fun1 - FunTwoVariable("x")
-        phi_y = self.fun2 - FunTwoVariable("y")
+        phi_x = self.fun1 + FunTwoVariable("x")
+        phi_y = self.fun2 + FunTwoVariable("y")
 
         q = max(phi_x.maximumAbsOfDiff(point_min, point_max), phi_y.maximumAbsOfDiff(point_min, point_max))
 
@@ -42,7 +42,7 @@ class SysTwoEquation:
 
         point = point_start
         point_next = phi_x.subs(point), phi_y.subs(point)
-        i = 2
+        i = 1
         while epsilon < max(abs(point[0] - point_next[0]), abs(point[1] - point_next[1])):
             point = point_next
             point_next = phi_x.subs(point), phi_y.subs(point)

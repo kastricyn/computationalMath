@@ -8,7 +8,7 @@ class Function:
         self.fun = sp.parse_expr(function, transformations='all')
         self.f = sp.lambdify(symbols, self.fun)
 
-    def subs(self, val: float) -> float:
+    def subs(self, val) -> float:
         return self.fun.subs({"x": val})
 
     def s(self, val) -> float:
@@ -32,28 +32,28 @@ class Function:
     def diff(self):
         return Function(sp.diff(self.fun, self.symbols).__str__())
 
-    def maximum(self, compact: tuple[float, float]) -> float:
+    def maximum(self, compact: tuple[float, float], step_number: int = 100) -> float:
         a, b = compact
         interval = sp.Interval(a, b)
         try:
             return sp.maximum(self.fun, self.symbols, interval)
         except NotImplementedError:
             ans = self.s(a)
-            for i in range(int(100 * a), int(100 * b) + 1):
-                t = self.s(i / 100)
+            for i in range(int(step_number * a), int(step_number * b) + 1):
+                t = self.s(i / step_number)
                 if ans < t:
                     ans = t
             return ans
 
-    def minimum(self, compact: tuple[float, float]) -> float:
+    def minimum(self, compact: tuple[float, float], step_number: int = 100) -> float:
         a, b = compact
         interval = sp.Interval(a, b)
         try:
             return sp.minimum(self.fun, self.symbols, interval)
         except NotImplementedError:
             ans = self.s(a)
-            for i in range(int(100 * a), int(100 * b) + 1):
-                t = self.s(i / 100)
+            for i in range(int(step_number * a), int(step_number * b) + 1):
+                t = self.s(i / step_number)
                 if ans > t:
                     ans = t
             return ans

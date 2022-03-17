@@ -1,6 +1,7 @@
 import sys
 from enum import auto
 from strenum import CamelCaseStrEnum
+import sympy as sp
 
 from function import Function
 

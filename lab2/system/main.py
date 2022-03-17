@@ -4,8 +4,8 @@ from FunTwoVariable import FunTwoVariable
 from SysTwoEq import SysTwoEquation
 
 if __name__ == '__main__':
-    fun1 = FunTwoVariable("0.1x^2 + x + 0.2y^2 - 0.3")
-    fun2 = FunTwoVariable("0.2x^2 + y - 0.1x*y - 0.7")
+    fun1 = FunTwoVariable("0.1x^2 - x + 0.2y^2 - 0.3")
+    fun2 = FunTwoVariable("0.2x^2 - y - 0.1x*y - 0.7")
     system = SysTwoEquation(fun1, fun2)
 
     print("Решаем систему из ур-ний:")

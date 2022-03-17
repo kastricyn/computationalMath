@@ -14,7 +14,7 @@ class FunTwoVariable:
         x, y = val
         return self.fun.subs({"x": x, "y": y})
 
-    def subs(self, val: tuple[float, float]) ->float:
+    def subs(self, val: tuple[float, float]) -> float:
         x, y = val
         return self.f(x, y)
 
@@ -48,13 +48,13 @@ class FunTwoVariable:
     def maximumAbsOfDiff(self, point_min: tuple[float, float], point_max: tuple[float, float]) -> float:
         return (self.dy().abs() + self.dx().abs()).maximum(point_min, point_max)
 
-    def maximum(self, point_min: tuple[float, float], point_max: tuple[float, float]) -> float:
+    def maximum(self, point_min: tuple[float, float], point_max: tuple[float, float], step_number: int = 20) -> float:
         x_min, y_min = point_min
         x_max, y_max = point_max
         interval = (x_min, x_max)
         ans = self.subs((x_min, y_min))
-        for y in range(int(100 * y_min), int(100* y_max)):
-            t = Function(self.substitute({"y": y/100}).__str__()).maximum(interval)
+        for y in range(int(step_number * y_min), int(step_number * y_max)):
+            t = Function(self.substitute({"y": y / step_number}).__str__()).maximum(interval, step_number)
             if t > ans:
                 ans = t
         return ans
