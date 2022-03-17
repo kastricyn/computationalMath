@@ -76,7 +76,7 @@ class Function:
         # ax.axvline(x=0, color='g')
 
         plt.plot([i / 100 for i in range(int(100 * start), int(100 * stop))],
-                 [self.f(i / 100) for i in range(int(100 * start), int(100 * stop))])
+                 [self.f(i / 100) for i in range(int(100 * start), int(100 * stop))], color='r')
         plt.show()
 
     def __str__(self) -> str:
