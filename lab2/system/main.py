@@ -2,6 +2,7 @@ import sys
 
 from FunTwoVariable import FunTwoVariable
 from SysTwoEq import SysTwoEquation
+from myLib.Scanner import Scanner
 
 if __name__ == '__main__':
     fun1 = FunTwoVariable("0.1x^2 - x + 0.2y^2 - 0.3")
@@ -14,9 +15,11 @@ if __name__ == '__main__':
 
     print(
         "Введите через пробел четыре числа: координаты левого нижней точки прямоугольной области (x, y) и верхнего правого")
-    x_min, y_min, x_max, y_max = map(float, input().split())
-    print("Введите точность (кол-во знаков после запятой)")
-    epsilon = int(input())
+    x_min = Scanner.getFloat(greeting="Координата x левого нижнего угла")
+    y_min = Scanner.getFloat(greeting="Координата y левого нижнего угла")
+    x_max = Scanner.getFloat(greeting="Координата x правого верхнего угла")
+    y_max = Scanner.getFloat(greeting="Координата y правого верхнего угла")
+    epsilon = Scanner.getInt(min=0, max=15, greeting="Необходимая точность (кол-во знаков после запятой)")
     try:
         res, n = system.solve((x_min, y_min), (x_max, y_max), 10 ** -epsilon)
         x, y = res
