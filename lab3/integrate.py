@@ -2,7 +2,7 @@ import sys
 from enum import auto
 from strenum import CamelCaseStrEnum
 
-from function import Function
+from myLib.function import Function
 
 
 def integrate(fun: Function, method: str, integrate_interval: tuple[float, float], epsilon: float,

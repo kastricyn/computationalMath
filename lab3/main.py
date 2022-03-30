@@ -1,5 +1,6 @@
-from function import Function
 from integrate import IntegrateNameMethod, integrate
+from myLib.Scanner import Scanner
+from myLib.function import Function
 
 functions = [
     "sin(x)", "cos(2x)", "x^2+20x-2", "sin(3x + pi/2)/cos(x)"
@@ -17,8 +18,10 @@ if __name__ == '__main__':
         print(f"\t {i}")
     method = input().strip()
 
-    print("Введите через пробел три числа: начало интервала интегрирования, конец интервала интегрирования и "
+    print("Введите через enter три числа: начало интервала, конец интервала и "
           "необходимую точность (кол-во знаков после запятой):")
-    a, b, epsilon = map(float, input().split())
+    a = Scanner.getFloat(greeting="Начало интервала")
+    b = Scanner.getFloat(greeting="Конец интервала")
+    epsilon = Scanner.getInt(min=0, max=25, greeting="Необходимая точность (кол-во знаков после запятой)")
     res, n = integrate(fun, method, (a, b), 10 ** -epsilon)
     print(f"Получено значение {round(res, int(epsilon))} при разбиении на {n} интервалов")
