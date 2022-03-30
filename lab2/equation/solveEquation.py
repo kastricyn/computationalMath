@@ -1,13 +1,14 @@
 import sys
 from enum import auto
-from strenum import CamelCaseStrEnum
-import sympy as sp
 
+from strenum import CamelCaseStrEnum
+
+from MyDecimal import MyDecimal
 from function import Function
 
 
 def solve(fun: Function, method: str, solve_interavl: tuple[float, float], epsilon: float,
-          iterate_number: int = None) -> tuple[float, int]:
+          iterate_number: int = None) -> tuple[float | MyDecimal, int]:
     chosen_method = SolveMethod.get_methods().get(method)
     if chosen_method is None:
         raise SolveMethod.InvalidMethodName("No find this method")
@@ -25,15 +26,21 @@ class SolveNameMethod(CamelCaseStrEnum):
 
 class SolveMethod:
     @staticmethod
-    def chord(fun: Function, solve_interval: tuple[float, float], epsilon: float, iterate_number: int = None) -> \
-            tuple[float, int]:
+    def chord(fun: Function, solve_interval: tuple[float | MyDecimal, float | MyDecimal], epsilon: float | MyDecimal,
+              iterate_number: int = None) -> tuple[float | MyDecimal, int]:
+        fun = fun.f
         a, b = solve_interval
-        if fun.subs(a) * fun.subs(b) > 0:
+        a = MyDecimal(a)
+        b = MyDecimal(b)
+
+        if fun(a) * fun(b) > 0:
             raise SolveMethod.OneSignOfFunOnEndsOfCompact(
                 "Выберите отрезок, на концах которого функция принимает значения с разными знаками")
 
-        new_x = lambda x: x - (a - x) / (fun.subs(a) - fun.subs(x)) * fun.subs(x)
-        x = b
+        def new_x(x: MyDecimal) -> MyDecimal:
+            return x - (a - x) / (fun(a) - fun(x)) * fun(x)
+
+        x: MyDecimal = b
 
         if iterate_number is not None:
             for _ in range(iterate_number):
@@ -42,7 +49,7 @@ class SolveMethod:
 
         next_x = new_x(x)
         i = 1
-        while epsilon < abs(fun.subs(x)):
+        while MyDecimal(epsilon) < abs(fun(x)):
             x = next_x
             next_x = new_x(x)
             i += 1
@@ -51,7 +58,6 @@ class SolveMethod:
     @staticmethod
     def simple_iteration(fun: Function, solve_interval: tuple[float, float], epsilon: float, iterate_number: int) -> \
             tuple[float, int]:
-        print(fun.diff())
         l: float = -1 / fun.diff().abs().maximum(solve_interval)
         phi = Function("x") + Function(str(l)) * fun
         q = phi.diff().abs().maximum(solve_interval)

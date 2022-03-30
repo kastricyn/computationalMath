@@ -8,11 +8,8 @@ class Function:
         self.fun = sp.parse_expr(function, transformations='all')
         self.f = sp.lambdify(symbols, self.fun)
 
-    def subs(self, val) -> float:
+    def subs(self, val: float) -> float:
         return self.fun.subs({"x": val})
-
-    def s(self, val) -> float:
-        return self.f(val)
 
     def __add__(self, other):
         return Function((self.fun + other.fun).__str__())
@@ -26,6 +23,9 @@ class Function:
     def __truediv__(self, other):
         return Function((self.fun / other.fun).__str__())
 
+    def __call__(self, val):
+        return self.f(val)
+
     def abs(self):
         return Function("abs(" + self.fun.__str__() + ")")
 
@@ -38,9 +38,9 @@ class Function:
         try:
             return sp.maximum(self.fun, self.symbols, interval)
         except NotImplementedError:
-            ans = self.s(a)
+            ans = self(a)
             for i in range(int(step_number * a), int(step_number * b) + 1):
-                t = self.s(i / step_number)
+                t = self(i / step_number)
                 if ans < t:
                     ans = t
             return ans
@@ -51,9 +51,9 @@ class Function:
         try:
             return sp.minimum(self.fun, self.symbols, interval)
         except NotImplementedError:
-            ans = self.s(a)
+            ans = self(a)
             for i in range(int(step_number * a), int(step_number * b) + 1):
-                t = self.s(i / step_number)
+                t = self(i / step_number)
                 if ans > t:
                     ans = t
             return ans
@@ -84,9 +84,10 @@ class Function:
 
 
 if __name__ == '__main__':
+
     f = Function("abs(x^2-31)")
     f.print()
-    print(f + Function("2x-35"))
-    print(f * Function("l") + Function("1"))
-    print(f.maximum((0, 3)))
-    print(f.minimum((0, 7)))
+    print(f.subs(0))
+    print(f.subs(1))
+
+
