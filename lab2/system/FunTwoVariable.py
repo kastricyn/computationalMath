@@ -1,5 +1,4 @@
 import sympy as sp
-import matplotlib.pyplot as plt
 
 from lab2.equation.function import Function
 
@@ -71,20 +70,7 @@ class FunTwoVariable:
         return ans
 
     def print(self):
-        # sp.init_printing(use_unicode=True)
         print(sp.pretty(self.fun))
-
-    # def plot(self, compact: tuple[float, float]):
-    #     start, stop = compact
-    #     ax = plt.gca()
-    #     # plot X - axis
-    #     ax.axhline(y=0, color='c')
-    #     # plot Y - axis
-    #     # ax.axvline(x=0, color='g')
-    #
-    #     plt.plot([i / 100 for i in range(int(100 * start), int(100 * stop))],
-    #              [self.f(i / 100) for i in range(int(100 * start), int(100 * stop))], color='g')
-    #     plt.show()
 
     def __str__(self) -> str:
         return self.fun.__str__()

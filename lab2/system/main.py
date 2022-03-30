@@ -21,6 +21,7 @@ if __name__ == '__main__':
     y_max = Scanner.getFloat(greeting="Координата y правого верхнего угла")
     epsilon = Scanner.getInt(min=0, max=15, greeting="Необходимая точность (кол-во знаков после запятой)")
     try:
+        system.plot((x_min, x_max), (y_min, y_max))
         res, n = system.solve((x_min, y_min), (x_max, y_max), 10 ** -epsilon)
         x, y = res
         x = round(x, epsilon)

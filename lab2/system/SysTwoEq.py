@@ -1,23 +1,22 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 from lab2.system.FunTwoVariable import FunTwoVariable
 
 
 class SysTwoEquation:
     def __init__(self, fun1: FunTwoVariable, fun2: FunTwoVariable):
-        self.fun1 = fun1
-        self.fun2 = fun2
+        self.fun1: FunTwoVariable = fun1
+        self.fun2: FunTwoVariable = fun2
 
-    def plot(self, compact: tuple[float, float]):
-        start, stop = compact
-        ax = plt.gca()
-        # plot X - axis
-        ax.axhline(y=0, color='c')
-        # plot Y - axis
-        # ax.axvline(x=0, color='g')
-
-        plt.plot([i / 100 for i in range(int(100 * start), int(100 * stop))],
-                 [self.fun1.subs(i / 100) for i in range(int(100 * start), int(100 * stop))], color='r')
+    def plot(self, x_compact: tuple[float, float], y_compact: tuple[float, float]) -> None:
+        x = np.linspace(x_compact[0], x_compact[1], 100)
+        y = np.linspace(y_compact[0], y_compact[1], 100)
+        X, Y = np.meshgrid(x, y)
+        Z1 = self.fun1.subs((X, Y))
+        Z2 = self.fun2.subs((X, Y))
+        plt.contour(X, Y, Z1, [0], colors=['red'])
+        plt.contour(X, Y, Z2, [0], colors=['blue'])
         plt.show()
 
     def solve(self, point_min: tuple[float, float], point_max: tuple[float, float], epsilon: float,
