@@ -3,7 +3,7 @@ from enum import auto
 
 from strenum import CamelCaseStrEnum
 
-from MyDecimal import MyDecimal
+from decimal import Decimal as MyDecimal
 from function import Function
 
 
