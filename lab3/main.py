@@ -22,6 +22,6 @@ if __name__ == '__main__':
           "необходимую точность (кол-во знаков после запятой):")
     a = Scanner.getFloat(greeting="Начало интервала")
     b = Scanner.getFloat(greeting="Конец интервала")
-    epsilon = Scanner.getInt(min=0, max=25, greeting="Необходимая точность (кол-во знаков после запятой)")
+    epsilon = Scanner.getInt(min=0, max=15, greeting="Необходимая точность (кол-во знаков после запятой)")
     res, n = integrate(fun, method, (a, b), 10 ** -epsilon)
     print(f"Получено значение {round(res, int(epsilon))} при разбиении на {n} интервалов")
