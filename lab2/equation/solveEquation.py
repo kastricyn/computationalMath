@@ -7,14 +7,14 @@ from decimal import Decimal as MyDecimal
 from function import Function
 
 
-def solve(fun: Function, method: str, solve_interavl: tuple[float, float], epsilon: float,
+def solve(fun: Function, method: str, solve_interval: tuple[float, float], epsilon: float,
           iterate_number: int = None) -> tuple[float | MyDecimal, int]:
     chosen_method = SolveMethod.get_methods().get(method)
     if chosen_method is None:
         raise SolveMethod.InvalidMethodName("No find this method")
     match chosen_method:
         case SolveMethod.chord | SolveMethod.simple_iteration:
-            return chosen_method(fun, solve_interavl, epsilon, iterate_number)
+            return chosen_method(fun, solve_interval, epsilon, iterate_number)
         case _:
             print("Check map name of method onto programm methods", file=sys.stderr)
 
@@ -30,10 +30,10 @@ class SolveMethod:
               iterate_number: int = None) -> tuple[float | MyDecimal, int]:
         fun = fun.f
         a, b = solve_interval
-        a = MyDecimal(a)
-        b = MyDecimal(b)
+        a = MyDecimal(str(a))
+        b = MyDecimal(str(b))
 
-        if fun(a) * fun(b) > 0:
+        if MyDecimal(fun(a)) * MyDecimal(fun(b)) > 0:
             raise SolveMethod.OneSignOfFunOnEndsOfCompact(
                 "Выберите отрезок, на концах которого функция принимает значения с разными знаками")
 
@@ -56,7 +56,8 @@ class SolveMethod:
         return next_x, i
 
     @staticmethod
-    def simple_iteration(fun: Function, solve_interval: tuple[float, float], epsilon: float, iterate_number: int) -> \
+    def simple_iteration(fun: Function, solve_interval: tuple[float, float], epsilon: float, iterate_number: int,
+                         trace: bool = False) -> \
             tuple[float, int]:
         l: float = -1 / fun.diff().abs().maximum(solve_interval)
         phi = Function("x") + Function(str(l)) * fun
@@ -75,13 +76,18 @@ class SolveMethod:
 
         x = solve_interval[0]
         next_x = phi.subs(x)
-        i = 2
+        i = 0
+        if trace:
+            print("i\tx_k\tf(x_k)\tx_k+1", file=sys.stderr)
+            print(f"{i}\t{x}\t{fun.subs(x)}\t{next_x}", file=sys.stderr)
         # while not end_iteration_condition(x, next_x):
-        while epsilon < fun.subs(next_x):
+        while epsilon < abs(fun.subs(next_x)):
             x = next_x
             next_x = phi.subs(x)
             i += 1
-        return next_x, i
+            if trace:
+                print(f"{i}\t{x}\t{fun.subs(x)}\t{next_x}", file=sys.stderr)
+        return next_x, i+1
 
     @staticmethod
     def get_methods() -> dict:
