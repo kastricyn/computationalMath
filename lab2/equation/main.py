@@ -33,8 +33,9 @@ if __name__ == '__main__':
     fun.plot((a, b))
     try:
         res, n = solve(fun, method, (a, b), 10 ** -epsilon)
-        print(f"Получено значение корня: f({res}) = {round(fun.subs(res), epsilon+2)} за {n} итерации")
-    except (SolveMethod.OneSignOfFunOnEndsOfCompact, TypeError):
+        print(f"Получено значение корня: f({res}) = {round(fun.subs(res), epsilon + 2)} за {n} итерации")
+    # except (SolveMethod.OneSignOfFunOnEndsOfCompact, TypeError):
+    except SolveMethod.OneSignOfFunOnEndsOfCompact:
         print("Выберите отрезок, на концах которого функция принимает значения с разными знаками ", file=sys.stderr)
     except SolveMethod.NoConverge:
         print("Не удалось найти точку для сходимости", file=sys.stderr)

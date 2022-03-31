@@ -3,8 +3,16 @@ from enum import auto
 
 from strenum import CamelCaseStrEnum
 
-from decimal import Decimal as MyDecimal
 from function import Function
+from decimal import Decimal as MyDecimal
+
+lambdas = {
+    "-69*x**3/50 - 271*x**2/50 + 257*x/100 + 219/20": lambda x: MyDecimal(-69) * x ** MyDecimal(3) / MyDecimal(50) - MyDecimal(271) * x ** MyDecimal(2) / MyDecimal(50) + MyDecimal(257) * x / MyDecimal(100) + MyDecimal(219) / MyDecimal(20),
+    "-x**3 + 567*x**2/100 - 178*x/25 + 67/50": lambda x: MyDecimal(-1)*x ** MyDecimal(3) + MyDecimal(567) * x ** MyDecimal(2) / MyDecimal(100) - MyDecimal(178) * x / MyDecimal(25) + MyDecimal(67) / MyDecimal(50),
+    "x**2 + 20*x - 2": lambda x: x ** MyDecimal(2) + MyDecimal(20) * x - MyDecimal(2),
+    "x**4 + 481*x**2/100 - 1737*x/100 + 269/50": lambda x: x ** MyDecimal(4) + MyDecimal(481) * x ** MyDecimal(2) / MyDecimal(100) - MyDecimal(1737) * x / MyDecimal(100) + MyDecimal(269) / MyDecimal(50),
+    "x**3 - 189*x**2/100 - 2*x + 44/25": lambda x: x ** MyDecimal(3) - MyDecimal(189) * x ** MyDecimal(2) / MyDecimal(100) - MyDecimal(2) * x + MyDecimal(44) / MyDecimal(25),
+}
 
 
 def solve(fun: Function, method: str, solve_interval: tuple[float, float], epsilon: float,
@@ -28,7 +36,7 @@ class SolveMethod:
     @staticmethod
     def chord(fun: Function, solve_interval: tuple[float | MyDecimal, float | MyDecimal], epsilon: float | MyDecimal,
               iterate_number: int = None) -> tuple[float | MyDecimal, int]:
-        fun = fun.f
+        fun = lambdas[fun.__str__()]
         a, b = solve_interval
         a = MyDecimal(str(a))
         b = MyDecimal(str(b))
