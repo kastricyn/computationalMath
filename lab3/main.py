@@ -1,6 +1,7 @@
 from integrate import IntegrateNameMethod, integrate
+from lab3.function import Function
 from myLib.Scanner import Scanner
-from myLib.function import Function
+
 
 functions = [
     "sin(x)", "cos(2x)", "x^2+20x-2", "sin(3x + pi/2)/cos(x)"
