@@ -4,7 +4,7 @@ from myLib.Scanner import Scanner
 
 
 functions = [
-    "sin(x)", "cos(2x)", "x^2+20x-2", "sin(3x + pi/2)/cos(x)"
+    "sin(x)", "cos(2x)", "x^2+20x-2", #"sin(3x + pi/2)/cos(x)"
 ]
 
 if __name__ == '__main__':

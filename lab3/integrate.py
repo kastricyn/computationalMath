@@ -51,7 +51,8 @@ class IntegrateMethod:
         size_of_compact = IntegrateMethod.__size_of_compact__(integrate_interval, compact_number)
         return sum(
             fun.subs({"x": a + i * size_of_compact}) * size_of_compact
-            for i in range(compact_number))
+            for i in
+            range(compact_number))
 
     @staticmethod
     def center_rectangle(fun: Function, integrate_interval: tuple[float, float], compact_number: int) -> float:
