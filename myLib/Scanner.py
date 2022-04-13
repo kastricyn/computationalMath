@@ -1,3 +1,4 @@
+import sys
 from math import inf
 
 
@@ -43,26 +44,26 @@ class Scanner:
                 print("Похоже это не число, попробуйте ещё раз")
 
     @staticmethod
-    def getListFloat(min: float = -inf, max: float = inf, greeting: str = "Введите пожалуйста") -> float:
-        t = ""
-        if min >= max:
-            min, max = max, min
+    def getFloatList(n: int = None, greeting: str = "", input=sys.stdin, output=sys.stdout, erroutput=sys.stderr) -> \
+            list[float]:
+        if n is None:
+            print(
+                f"Введите числа в строку, разделяя их пробелами {greeting}:",
+                file=output)
+        else:
+            print(
+                f"Введите {n} чисел(-ла) в строку, разделяя их пробелами {greeting}:",
+                file=output)
 
-        warning = f"Должно быть целое"
-        sub_greeting = f" число между {min} и {max}"
-
-        print(greeting + sub_greeting)
-        while True:
-            try:
-                t = float(input())
-                if min <= t <= max:
-                    return t
-                else:
-                    print(warning + sub_greeting)
-            except ValueError:
-                print("Похоже это не число, попробуйте ещё раз")
+        t = list(map(float, input.readline().strip().split()))
+        while n is not None and len(t) != n:
+            print(
+                f"Что-то пошло не так, должно быть {n} элементов в строке, а получлось {len(t)}. Введите ещё раз {n} чисел:",
+                file=erroutput)
+            t = list(map(float, input.readline().strip().split()))
+        return t
 
 
 if __name__ == '__main__':
-    Scanner.getInt(-10, -5)
-    Scanner.getFloat(-10, -5)
+    x = Scanner.getFloatList(greeting="-- x")
+    y = Scanner.getFloatList(greeting="-- y", n=len(x))
