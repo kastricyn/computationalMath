@@ -1,3 +1,5 @@
-4
-trapeze
--100 100 2
+3
+rightRectangular
+-10
+10
+2
