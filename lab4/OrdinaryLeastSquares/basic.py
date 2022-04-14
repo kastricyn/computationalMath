@@ -1,3 +1,5 @@
+from math import sqrt
+
 from metrics import Metrix
 
 
@@ -25,9 +27,10 @@ class OrdinaryLeastSquareBasicApproximation:
         pass
 
     def count_metrix(self):
-        # todo: self.metrix['']
+        self.metrix['sigma'] = sqrt(sum([
+            (self.resultY[i] - self.y[i]) ** 2 for i in range(self.n)
+        ]) / self.n)
         pass
-
 
     def updateResultY(self):
         self.resultY = [self.func(i) for i in self.x]
