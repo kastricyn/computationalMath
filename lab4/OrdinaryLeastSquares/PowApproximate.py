@@ -18,7 +18,7 @@ class PowApproximate(OrdinaryLeastSquareBasicApproximation):
         lin_points = [(log(self.x[i]), log(self.y[i])) for i in range(self.n)]
         line_approximate = LineApproximate(lin_points)
 
-        a = self.a_ = exp(line_approximate.ba_)
+        a = self.a_ = exp(line_approximate.b_)
         b = self.b_ = line_approximate.a_
 
         self.func = lambda x: a * (x ** b)
