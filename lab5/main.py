@@ -9,15 +9,16 @@ def getLagrangePolinom(points: list[tuple[float, float]]) -> P:
         t = P([points[i][1]])
         for j in range(len(points)):
             if i != j:
-                t *= P([-points[0][j], 1]) / (points[i][0] - points[j][0])
+                t *= P([-points[j][0], 1]) // (points[i][0] - points[j][0])
+        ans += t
     return ans
 
 
-def getNewtomPolinom(points: list[tuple[float, float]]) -> P:
+def getNewtonPolinom(points: list[tuple[float, float]], x_search=None) -> P:
     t = points[1][0] - points[0][0]
-    if all([t == points[i + 1][0] - points[i][0] for i in range(len(points) - 1)]):
-        return getNewtomPolinomUseConstSub(points)
-    # при возможности применим конечные разности
+    if all([t - points[i + 1][0] + points[i][0] < 1e-6 for i in range(len(points) - 1)]):
+        return getNewtonPolinomUseConstSub(points, x_search)
+    # при возможности применяем конечные разности, иначе интерполяция по Ньютону
     gk = P([points[0][1]])
     for k in range(len(points) - 1):
         ak = points[k + 1][1] - gk(points[k + 1][0])
@@ -30,7 +31,7 @@ def getNewtomPolinom(points: list[tuple[float, float]]) -> P:
     return gk
 
 
-def getNewtomPolinomUseConstSub(points: list[tuple[float, float]], x_search=None) -> P:
+def getNewtonPolinomUseConstSub(points: list[tuple[float, float]], x_search=None) -> P:
     points.sort()
     if x_search is None:
         return NewtonFront(points)
@@ -71,7 +72,7 @@ def NewtonBack(points: list[tuple[float, float]]) -> P:
     g = 1
     for i in range(len(points) - 1):
         g *= t + i
-        ans += g * subs[len(points) -i-2][i] // math.factorial(i + 1)
+        ans += g * subs[len(points) - i - 2][i] // math.factorial(i + 1)
     return ans
 
 
@@ -81,6 +82,8 @@ def getGaussPolinom(points: list[tuple[float, float]]):
 
 if __name__ == '__main__':
     print(getConstSubs([(.1, 1.25), (0.2, 2.38), (.3, 3.79), (.4, 5.44), (.5, 7.14)]))
-    k = getNewtomPolinomUseConstSub([(.1, 1.25), (0.2, 2.38), (.3, 3.79), (.4, 5.44), (.5, 7.14)], 0.47)
+    k = getNewtonPolinom([(.1, 1.25), (0.2, 2.38), (.3, 3.79), (.4, 5.44), (.5, 7.14)])
+    print(k)
+    k = getLagrangePolinom([(.1, 1.25), (0.2, 2.38), (.3, 3.79), (.4, 5.44), (.5, 7.14)])
     print(k)
     print(k(0.47))
