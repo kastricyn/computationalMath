@@ -1,7 +1,7 @@
 from math import log, exp
 
 from basic import OrdinaryLeastSquareBasicApproximation
-from lineApproximation import LineApproximate
+from LineApproximation import LineApproximate
 
 
 class ExpApproximate(OrdinaryLeastSquareBasicApproximation):
