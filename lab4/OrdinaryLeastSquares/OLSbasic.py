@@ -1,9 +1,7 @@
 from math import sqrt
 
-from metrics import Metrix
-
-
 class OrdinaryLeastSquareBasicApproximation:
+
     def __init__(self, points: list[tuple[float, float]]):
         self.points = points
         self.x = [point[0] for point in points]
@@ -13,8 +11,7 @@ class OrdinaryLeastSquareBasicApproximation:
         self.func_str: str | None = None
         self.resultY: list[float] | None = None
         self.metrix: dict[str, float] = dict()
-
-        self._polinom_degree = 2
+        self._polinom_degree = 1
         self.approximate()
         self.updateResultY()
         self.count_metrix()
@@ -35,8 +32,8 @@ class OrdinaryLeastSquareBasicApproximation:
         pass
 
     def coeff_pirsona(self):
-        x = self.x;
-        y = self.y;
+        x = self.x
+        y = self.y
         n = self.n
         x_average = sum(x) / n
         y_average = sum(y) / n

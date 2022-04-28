@@ -1,7 +1,7 @@
 from math import log, exp
 
-from basic import OrdinaryLeastSquareBasicApproximation
-from LineApproximation import PolinomApproximate
+from lab4.OrdinaryLeastSquares.OLSbasic import OrdinaryLeastSquareBasicApproximation
+from lab4.OrdinaryLeastSquares.PolinomApproximation import PolinomApproximate
 
 
 class PowApproximate(OrdinaryLeastSquareBasicApproximation):

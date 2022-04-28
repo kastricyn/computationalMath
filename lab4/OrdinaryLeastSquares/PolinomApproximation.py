@@ -1,12 +1,23 @@
-from basic import OrdinaryLeastSquareBasicApproximation
+from lab4.OrdinaryLeastSquares.OLSbasic import OrdinaryLeastSquareBasicApproximation
 from numpy.polynomial import Polynomial as P
+
 from numpy.linalg import solve
 
 
 class PolinomApproximate(OrdinaryLeastSquareBasicApproximation):
-    def __init__(self, points: list[tuple[float, float]], polinom_degree: int = 2):
-        super().__init__(points)
+    def __init__(self, points: list[tuple[float, float]], polinom_degree: int = 1):
+        self.points = points
+        self.x = [point[0] for point in points]
+        self.y = [point[1] for point in points]
+        self.n = len(points)
+        self.func = None
+        self.func_str: str | None = None
+        self.resultY: list[float] | None = None
+        self.metrix: dict[str, float] = dict()
         self._polinom_degree = polinom_degree
+        self.approximate()
+        self.updateResultY()
+        self.count_metrix()
 
     def approximate(self):
         n = self._polinom_degree  # степень полинома
@@ -17,6 +28,12 @@ class PolinomApproximate(OrdinaryLeastSquareBasicApproximation):
 
         self.func = P(solve(A, B))
         self.func_str = self.func.__str__()
+
+        if n == 1:
+            self.coeff_pirsona()
+
+        self.a_ = self.func.coef[1]
+        self.b_ = self.func.coef[0]
 
 
 if __name__ == '__main__':
