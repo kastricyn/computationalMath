@@ -67,8 +67,8 @@ def NewtonFront(points: list[tuple[float, float]]) -> P:
 
 def NewtonBack(points: list[tuple[float, float]]) -> P:
     subs = getConstSubs(points)
-    ans = P([points[len(points) - 1][1]])
-    t = P([-points[len(points) - 1][0], 1]) // (points[1][0] - points[0][0])
+    ans = P([points[-1][1]])
+    t = P([-points[-1][0], 1]) // (points[1][0] - points[0][0])
     g = 1
     for i in range(len(points) - 1):
         g *= t + i
@@ -87,3 +87,15 @@ if __name__ == '__main__':
     k = getLagrangePolinom([(.1, 1.25), (0.2, 2.38), (.3, 3.79), (.4, 5.44), (.5, 7.14)])
     print(k)
     print(k(0.47))
+
+    проверка = [(1.05, 0.1213),
+    (1.15, 	1.1316),
+    (1.25, 	2.1459),
+    (1.35, 	3.1565),
+    (1.45, 	4.1571),
+    (1.55, 	5.1819),
+    (1.65, 	6.1969)]
+    print(getConstSubs(проверка))
+    k = getNewtonPolinomUseConstSub(проверка, 1.277)
+    print(k(1.277))
+
