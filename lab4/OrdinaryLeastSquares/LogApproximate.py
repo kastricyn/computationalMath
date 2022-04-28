@@ -1,7 +1,7 @@
 from math import log, exp
 
 from basic import OrdinaryLeastSquareBasicApproximation
-from LineApproximation import LineApproximate
+from LineApproximation import PolinomApproximate
 
 
 class PowApproximate(OrdinaryLeastSquareBasicApproximation):
@@ -16,7 +16,7 @@ class PowApproximate(OrdinaryLeastSquareBasicApproximation):
             return
 
         lin_points = [(log(self.x[i]), self.y[i]) for i in range(self.n)]
-        line_approximate = LineApproximate(lin_points)
+        line_approximate = PolinomApproximate(lin_points)
 
         a = self.a_ = line_approximate.a_
         b = self.b_ = line_approximate.b_
