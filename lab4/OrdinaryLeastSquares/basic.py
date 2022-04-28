@@ -34,6 +34,16 @@ class OrdinaryLeastSquareBasicApproximation:
         self.metrix["sigma"] = sqrt(self.metrix["S"] / self.n)
         pass
 
+    def coeff_pirsona(self):
+        x = self.x;
+        y = self.y;
+        n = self.n
+        x_average = sum(x) / n
+        y_average = sum(y) / n
+        self.metrix['pirson'] = sum([(x[i] - x_average) * (y[i] - y_average) for i in range(n)]) / sqrt(
+            sum([(x[i] - x_average) ** 2 for i in range(n)]) * sum([(y[i] - y_average) ** 2 for i in range(n)])
+        )
+
     def updateResultY(self):
         self.resultY = [self.func(i) for i in self.x]
 
