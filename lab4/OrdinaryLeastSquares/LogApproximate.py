@@ -1,10 +1,10 @@
-from math import log, exp
+from math import log
 
-from basic import OrdinaryLeastSquareBasicApproximation
-from lineApproximation import LineApproximate
+from lab4.OrdinaryLeastSquares.OLSbasic import OrdinaryLeastSquareBasicApproximation
+from lab4.OrdinaryLeastSquares.PolinomApproximation import PolinomApproximate
 
 
-class PowApproximate(OrdinaryLeastSquareBasicApproximation):
+class LogApproximate(OrdinaryLeastSquareBasicApproximation):
 
     def __init__(self, points: list[tuple[float, float]]):
         super().__init__(points)
@@ -16,7 +16,7 @@ class PowApproximate(OrdinaryLeastSquareBasicApproximation):
             return
 
         lin_points = [(log(self.x[i]), self.y[i]) for i in range(self.n)]
-        line_approximate = LineApproximate(lin_points)
+        line_approximate = PolinomApproximate(lin_points)
 
         a = self.a_ = line_approximate.a_
         b = self.b_ = line_approximate.b_
