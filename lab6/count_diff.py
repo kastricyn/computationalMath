@@ -1,10 +1,9 @@
-import pandas as pd
 from myLib.FunTwoVariable import FunTwoVariable
 
 
-def EulerMethodImprove(fun: FunTwoVariable, compact: tuple[float, float], h: float, y0: float) -> list[dict]:
+def EulerMethodImprove(fun: FunTwoVariable, compact: tuple[float, float], h: float, y_0: float) -> list[dict]:
     a, b = compact
-    ans = [{"i": 0, "x_i": a, "y_i~": "-", "f(x_i, y_i~)": "-", "y_i": y0, "f(x_i, y_i)": fun(a, y0)}]
+    ans = [{"i": 0, "x_i": a, "y_i~": "-", "f(x_i, y_i~)": "-", "y_i": y_0, "f(x_i, y_i)": fun(a, y_0)}]
 
     for i in range(1, int((b - a) / h) + 1):
         prev = ans[-1]
@@ -16,17 +15,18 @@ def EulerMethodImprove(fun: FunTwoVariable, compact: tuple[float, float], h: flo
     return ans
 
 
-def EulerMethodImproveWithEpsilon(fun: FunTwoVariable, compact: tuple[float, float], h: float, y0: float,
-                                  epsilon: float = None) -> list[dict]:
-    prev = EulerMethodImprove(fun, compact, h, y0)
+def IterationWithEpsilon(epsilon: float = None, p=2, method=EulerMethodImprove, **kwargs) -> list[dict]:
+    prev = method(**kwargs)
     if epsilon is None:
         return prev
-    h /= 2
-    cur = EulerMethodImprove(fun, compact, h / 2, y0)
-    p = 2
+    kwargs['h'] /= 2
+    cur = EulerMethodImprove(**kwargs)
     while epsilon <= abs(cur[-1]["y_i"] - prev[-1]["y_i"]) / (2 ** p - 1):
         prev = cur
-        h /= 2
-        cur = EulerMethodImprove(fun, compact, h / 2, y0)
+        kwargs['h'] /= 2
+        cur = EulerMethodImprove(**kwargs)
     return prev
 
+
+def AdamsMethod(fun: FunTwoVariable, compact: tuple[float, float], h: float, y0: float) -> list[dict]:
+    pass

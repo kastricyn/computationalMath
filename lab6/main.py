@@ -3,7 +3,7 @@ from prettytable import PrettyTable
 
 from myLib.Scanner import Scanner
 from myLib.FunTwoVariable import FunTwoVariable
-from count_diff import EulerMethodImproveWithEpsilon
+from count_diff import IterationWithEpsilon, EulerMethodImprove
 
 functions = [
     "y*cos(x) + sin(x + y)", "y + (1+x)y^2",
@@ -29,6 +29,8 @@ if __name__ == '__main__':
         f"Решаем уравнение y' = {funstr} с начальным условием y({x0}) = {y0}, выбрав шаг h = {h} на отрезке [{a}, {b}]:")
 
     print("Усовершенствованный метод Эйлера")
-    print(pd.DataFrame.from_records(EulerMethodImproveWithEpsilon(fun, (a, b), h, y0, epsilon), index="i"))
+    print(pd.DataFrame.from_records(
+        IterationWithEpsilon(epsilon, EulerMethodImprove, fun=fun, compact=(a, b), h=h, y_0=y0), index="i"))
 
     print("Метод Адамаса")
+
