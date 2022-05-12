@@ -3,7 +3,7 @@ from prettytable import PrettyTable
 
 from myLib.Scanner import Scanner
 from myLib.FunTwoVariable import FunTwoVariable
-from count_diff import IterationWithEpsilon, EulerMethodImprove
+from count_diff import IterationWithEpsilon, EulerMethodImprove, RungeKutta
 
 functions = [
     "y*cos(x) + sin(x + y)", "y + (1+x)y^2",
@@ -30,7 +30,10 @@ if __name__ == '__main__':
 
     print("Усовершенствованный метод Эйлера")
     print(pd.DataFrame.from_records(
-        IterationWithEpsilon(epsilon, EulerMethodImprove, fun=fun, compact=(a, b), h=h, y_0=y0), index="i"))
+        IterationWithEpsilon(epsilon, p=2, method=EulerMethodImprove, fun=fun, compact=(a, b), h=h, y_0=y0), index="i"))
+
+    print("Метод Рунге-Кутта 4- го порядка")
+    print(pd.DataFrame.from_records(
+        IterationWithEpsilon(epsilon, p=4, method=RungeKutta, fun=fun, compact=(a, b), h=h, y_0=y0), index="i"))
 
     print("Метод Адамаса")
-
