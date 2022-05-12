@@ -1,9 +1,9 @@
 import pandas as pd
-from prettytable import PrettyTable
+import matplotlib.pyplot as plt
 
 from myLib.Scanner import Scanner
 from myLib.FunTwoVariable import FunTwoVariable
-from count_diff import IterationWithEpsilon, EulerMethodImprove, RungeKutta
+from count_diff import IterationWithEpsilon, EulerMethodImprove, RungeKutta, AdamsMethod
 
 functions = [
     "y*cos(x) + sin(x + y)", "y + (1+x)y^2",
@@ -28,12 +28,26 @@ if __name__ == '__main__':
     print(
         f"Решаем уравнение y' = {funstr} с начальным условием y({x0}) = {y0}, выбрав шаг h = {h} на отрезке [{a}, {b}]:")
 
-    print("Усовершенствованный метод Эйлера")
-    print(pd.DataFrame.from_records(
-        IterationWithEpsilon(epsilon, p=2, method=EulerMethodImprove, fun=fun, compact=(a, b), h=h, y_0=y0), index="i"))
+    print("\nУсовершенствованный метод Эйлера")
+    euler_pro = pd.DataFrame.from_records(
+        IterationWithEpsilon(epsilon, p=2, method=EulerMethodImprove, fun=fun, compact=(a, b), h=h, y_0=y0), index="i")
 
-    print("Метод Рунге-Кутта 4- го порядка")
-    print(pd.DataFrame.from_records(
-        IterationWithEpsilon(epsilon, p=4, method=RungeKutta, fun=fun, compact=(a, b), h=h, y_0=y0), index="i"))
+    print("\nМетод Рунге-Кутта 4- го порядка")
+    rk = pd.DataFrame.from_records(
+        IterationWithEpsilon(epsilon, p=4, method=RungeKutta, fun=fun, compact=(a, b), h=h, y_0=y0), index="i")
+    print(rk)
 
-    print("Метод Адамаса")
+    print("\nМетод Адамса")
+    adams = pd.DataFrame.from_records(
+        IterationWithEpsilon(epsilon, p=4, method=AdamsMethod, fun=fun, compact=(a, b), h=h, y_0=y0), index="i")
+    print(adams)
+
+    ideals = [[1, 1.1, 1.2, 1.3, 1.4, 1.5],[-1, -0.909091, -0.833333, -0.769231, -0.714286, -0.666667]]
+
+    plt.grid()
+    plt.scatter(adams["x_i"], adams["y_i"], c='g', s=5, label="Метод Адамса")
+    plt.scatter(euler_pro["x_i"], euler_pro["y_i"], c='r', s=5, label="Усовершенствованный метод Эйлера")
+    plt.scatter(rk["x_i"], rk["y_i"], c='b', s=5, label="Метод Рунге-Кутта 4-го порядка")
+    plt.scatter(ideals[0], ideals[1], c='k', s=5, label="Точный метод")
+    plt.legend()
+    plt.show()

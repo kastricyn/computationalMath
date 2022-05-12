@@ -1,3 +1,5 @@
+import math
+
 from myLib.FunTwoVariable import FunTwoVariable
 
 
@@ -42,5 +44,18 @@ def RungeKutta(fun: FunTwoVariable, compact: tuple[float, float], h: float, y_0:
     return ans
 
 
-def AdamsMethod(fun: FunTwoVariable, compact: tuple[float, float], h: float, y0: float) -> list[dict]:
-    pass
+def AdamsMethod(fun: FunTwoVariable, compact: tuple[float, float], h: float, y_0: float) -> list[dict]:
+    a, b = compact
+    ans = RungeKutta(fun, (a, a + 3.1 * h), h, y_0)
+    for i in range(4, int((b - a) / h) + 1):
+        f = [ans[-1]['f(x_i, y_i)']]
+        f.append(ans[-1]['f(x_i, y_i)'] - ans[-2]['f(x_i, y_i)'])
+        f.append(ans[-1]['f(x_i, y_i)'] - 2 * ans[-2]['f(x_i, y_i)'] + ans[-3]['f(x_i, y_i)'])
+        f.append(
+            ans[-1]['f(x_i, y_i)'] - 3 * ans[-2]['f(x_i, y_i)'] + 3 * ans[-3]['f(x_i, y_i)'] - ans[-4]['f(x_i, y_i)'])
+        dict = {"i": i, "x_i": a + i * h}
+        dict['y_i'] = ans[-1]["y_i"] + h * f[0] + 0.5 * (h ** 2) * f[1] + 5 / 12 * (h ** 3) * f[2] + 3 / 8 * (h ** 4) * \
+                      f[3]
+        dict['f(x_i, y_i)'] = fun(dict['x_i'], dict['y_i'])
+        ans.append(dict)
+    return ans
