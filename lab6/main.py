@@ -6,7 +6,7 @@ from myLib.FunTwoVariable import FunTwoVariable
 from count_diff import IterationWithEpsilon, EulerMethodImprove, RungeKutta, AdamsMethod
 
 functions = [
-    "y*cos(x) + sin(x + y)", "y + (1+x)y^2",
+    "y + (1+x)y^2",
 ]
 
 if __name__ == '__main__':
@@ -31,6 +31,7 @@ if __name__ == '__main__':
     print("\nУсовершенствованный метод Эйлера")
     euler_pro = pd.DataFrame.from_records(
         IterationWithEpsilon(epsilon, p=2, method=EulerMethodImprove, fun=fun, compact=(a, b), h=h, y_0=y0), index="i")
+    print(euler_pro)
 
     print("\nМетод Рунге-Кутта 4- го порядка")
     rk = pd.DataFrame.from_records(
