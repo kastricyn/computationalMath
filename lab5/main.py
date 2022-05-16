@@ -23,7 +23,7 @@ if __name__ == '__main__':
         points.append((pi / 3, sqrt(3) / 2))
 
     lagrange_polinom = getLagrangePolinom(points)
-    print("Интерполяционный многочлен по Ньютону: f(x) = ", lagrange_polinom)
+    print("Интерполяционный многочлен по Лагранжу: f(x) = ", lagrange_polinom)
     print("Значение f(x): ", lagrange_polinom(x))
 
     newton_polinom = getNewtonPolinom(points, x)
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     plt.scatter(X, Y, marker='o', c="w", linewidths=2, edgecolors='r')
     linspace = np.linspace(min(X) - 0.1 * abs(max(X) - min(X)), max(X) + 0.1 * abs(max(X) - min(X)), 100)
 
-    plt.vlines(x, lagrange_polinom(linspace[0]), lagrange_polinom(linspace[-1]), linestyles="dashed", label="Искомое значение")
+    plt.vlines(x, min(lagrange_polinom(linspace)), max(lagrange_polinom(linspace)), linestyles="dashed", label="Искомое значение")
     plt.plot(linspace, lagrange_polinom(linspace), c='g', label="Лагранж придумал")
     plt.plot(linspace, newton_polinom(linspace), c='b', label="Ньютон придумал")
     plt.legend()
