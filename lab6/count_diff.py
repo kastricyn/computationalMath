@@ -43,6 +43,19 @@ def RungeKutta(fun: FunTwoVariable, compact: tuple[float, float], h: float, y_0:
         ans.append(dict)
     return ans
 
+def RungeKutta2(fun: FunTwoVariable, compact: tuple[float, float], h: float, y_0: float) -> list[dict]:
+    a, b = compact
+    ans = [{"i": 0, "x_i": a, "y_i": y_0, "f(x_i, y_i)": fun(a, y_0)}]
+    for i in range(1, int((b - a) / h) + 1):
+        k = [h * fun(ans[-1]["x_i"], ans[-1]["y_i"])]
+        k.append(h * fun(ans[-1]["x_i"] + h, ans[-1]["y_i"] + k[-1]))
+        dict = {"i": i, "x_i": a + i * h, "y_i": ans[-1]["y_i"] + sum(k) / 2}
+        dict['f(x_i, y_i)'] = fun(dict['x_i'], dict['y_i'])
+        dict['k1'] = k[0]
+        dict['k2'] = k[1]
+        ans.append(dict)
+    return ans
+
 
 def AdamsMethod(fun: FunTwoVariable, compact: tuple[float, float], h: float, y_0: float) -> list[dict]:
     a, b = compact

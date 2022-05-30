@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 
 from myLib.Scanner import Scanner
 from myLib.FunTwoVariable import FunTwoVariable
-from count_diff import IterationWithEpsilon, EulerMethodImprove, RungeKutta, AdamsMethod
+from count_diff import IterationWithEpsilon, EulerMethodImprove, RungeKutta, AdamsMethod, RungeKutta2
 
 functions = [
-    "y + (1+x)y^2",
+    "y + (1+x)y^2", "1 +sin(3x+y) +0.5y/(x+3)"
 ]
 
 if __name__ == '__main__':
@@ -36,6 +36,11 @@ if __name__ == '__main__':
     print("\nМетод Рунге-Кутта 4- го порядка")
     rk = pd.DataFrame.from_records(
         IterationWithEpsilon(epsilon, p=4, method=RungeKutta, fun=fun, compact=(a, b), h=h, y_0=y0), index="i")
+    print(rk)
+
+    print("\nМетод Рунге-Кутта 2- го порядка")
+    rk = pd.DataFrame.from_records(
+        IterationWithEpsilon(epsilon, p=2, method=RungeKutta2, fun=fun, compact=(a, b), h=h, y_0=y0), index="i")
     print(rk)
 
     print("\nМетод Адамса")
